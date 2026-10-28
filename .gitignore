@@ -1,0 +1,8 @@
+node_modules/
+plans/
+# Project documentation and API references
+api.txt
+client.txt
+FRONTEND_API_GAPS.md
+plan.txt
+plan2.txt
