@@ -5,7 +5,8 @@ const conversationSchema = new mongoose.Schema(
     enrollmentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'CourseEnrollment',
-      required: true,
+      required: false,   // optional — student may chat without a specific enrollment
+      default: null,
       index: true
     },
     studentId: {
@@ -17,7 +18,8 @@ const conversationSchema = new mongoose.Schema(
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course',
-      required: true,
+      required: false,   // optional — allows general chat without a course context
+      default: null,
       index: true
     },
     moduleId: {

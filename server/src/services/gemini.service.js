@@ -251,11 +251,12 @@ Return ONLY a single valid JSON object with format:
         suggestedAction: parsed.suggestedAction || 'continue_lesson'
       };
     } catch (err) {
-      console.warn(`[GeminiService] Mentor chat generation fallback: ${err.message}`);
-      return {
-        reply: "I am having trouble connecting to my knowledge base right now, but feel free to review the lesson notes or attempt the practice questions!",
-        suggestedAction: "continue_lesson"
-      };
+      console.error(`[GeminiService] Mentor reply failed (model: ${env.GEMINI_MODEL}): ${err.message}`);
+      throw new AppError(
+        `AI Mentor is temporarily unavailable: ${err.message}`,
+        502,
+        'GEMINI_MENTOR_ERROR'
+      );
     }
   }
 

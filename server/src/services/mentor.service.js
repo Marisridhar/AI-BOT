@@ -9,19 +9,22 @@ import { AppError } from '../utils/AppError.js';
 
 export class MentorService {
   async startConversation({ enrollmentId, studentId, courseId, moduleId, lessonId, title }) {
-    if (!enrollmentId || !studentId || !courseId) {
-      throw new AppError('enrollmentId, studentId, and courseId are required', 400, 'VALIDATION_ERROR');
+    if (!studentId) {
+      throw new AppError('studentId is required', 400, 'VALIDATION_ERROR');
     }
 
-    const enrollment = await CourseEnrollment.findOne({ _id: enrollmentId, studentId });
-    if (!enrollment) {
-      throw new AppError('Enrolled course not found for student', 404, 'ENROLLMENT_NOT_FOUND');
+    // Validate enrollment only when enrollmentId is provided
+    if (enrollmentId) {
+      const enrollment = await CourseEnrollment.findOne({ _id: enrollmentId, studentId });
+      if (!enrollment) {
+        throw new AppError('Enrolled course not found for student', 404, 'ENROLLMENT_NOT_FOUND');
+      }
     }
 
     const conversation = new Conversation({
-      enrollmentId,
+      enrollmentId: enrollmentId || null,
       studentId,
-      courseId,
+      courseId: courseId || null,
       moduleId: moduleId || null,
       lessonId: lessonId || null,
       title: title || 'Learning Conversation',

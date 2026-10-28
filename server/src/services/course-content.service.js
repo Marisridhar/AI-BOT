@@ -25,7 +25,14 @@ export class CourseContentService {
     }
 
     if (!course) {
-      throw new AppError('Course context not found', 404, 'COURSE_NOT_FOUND');
+      // No course context available — return a minimal stub so the mentor
+      // can still respond in a general capacity without crashing.
+      return {
+        course: { title: 'General Learning', description: '', difficulty: 'beginner', learningObjectives: [] },
+        module: null,
+        lesson: null,
+        assignments: []
+      };
     }
 
     // Load module assignments WITHOUT private answer keys
